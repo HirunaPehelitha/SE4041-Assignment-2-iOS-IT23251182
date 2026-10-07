@@ -27,6 +27,16 @@ final class BookNestUITests: XCTestCase {
         XCTAssertTrue(pageNumber.label.hasPrefix("Page 2 of"))
     }
 
+    func testContinueReadingCardAppearsAfterOpeningBook() {
+        XCTAssertFalse(app.buttons["continueReading"].exists)   // nothing read yet
+
+        app.buttons["book.The Kite Over Galle Fort"].tap()
+        app.swipeLeft()                                          // go to page 2
+        app.navigationBars.buttons.element(boundBy: 0).tap()     // back to Library
+
+        XCTAssertTrue(app.buttons["continueReading"].waitForExistence(timeout: 3))
+    }
+
     func testBookmarkShowsInBookmarksTab() {
         app.buttons["book.The Kite Over Galle Fort"].tap()
         app.buttons["reader.bookmark"].tap()

@@ -39,6 +39,17 @@ struct BookTests {
         #expect(book.progress == 0.5)
     }
 
+    @Test func readingAndFinishedStatus() {
+        let book = makeBook(words: Paginator.wordsPerPage * 3)
+        #expect(!book.isReading && !book.isFinished)      // new book
+
+        book.lastOpened = .now
+        #expect(book.isReading && !book.isFinished)       // on page 1 of 3
+
+        book.currentPage = 2
+        #expect(!book.isReading && book.isFinished)       // on the last page
+    }
+
     @Test func bookmarkCanBeFoundByPage() throws {
         let book = makeBook(words: 500)
         let bookmark = Bookmark(pageIndex: 2, snippet: "word word")

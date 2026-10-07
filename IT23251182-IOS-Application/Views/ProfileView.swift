@@ -23,7 +23,7 @@ struct ProfileView: View {
     }
 
     private var booksFinished: Int {
-        books.filter { $0.lastOpened != nil && $0.currentPage == $0.pageCount - 1 }.count
+        books.filter(\.isFinished).count
     }
 
     private var pagesRead: Int {

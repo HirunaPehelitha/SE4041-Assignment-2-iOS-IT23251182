@@ -74,3 +74,14 @@ and how it was used. Keep adding an entry each time you use an AI tool.
   settings. Added a UI test for it. All 16 tests pass.
 - **How I used it:** _(fill in)_
 - **What I learned:** _(fill in, e.g. the difference between @AppStorage and SwiftData)_
+
+## Entry 6 – 2026-10-07 – Professional Library screen
+
+- **Prompt:** "add more more things to like completion bar to read bar in the main screen more like professional one"
+- **Response summary:** Redesigned `LibraryView` with a time-of-day greeting, a "Continue Reading" card
+  (cover, progress bar, % complete, page number, Resume button), All/Reading/Finished/New filter, search,
+  sort menu, and a progress bar or NEW badge under every book. Added a `ReadingProgressBar` custom
+  component that animates when it appears, plus `isReading` and `isFinished` on `Book`. Added 1 unit test and 1 UI test.
+  All 18 tests pass.
+- **How I used it:** _(fill in)_
+- **What I learned:** _(fill in, e.g. how computed properties filter and sort the books)_

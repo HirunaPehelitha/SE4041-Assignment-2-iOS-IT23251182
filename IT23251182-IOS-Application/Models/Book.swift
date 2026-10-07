@@ -39,6 +39,16 @@ final class Book {
         return Double(currentPage + 1) / Double(pageCount)
     }
 
+    /// True when the reader has reached the last page.
+    var isFinished: Bool {
+        lastOpened != nil && currentPage >= pageCount - 1
+    }
+
+    /// True when the book has been opened but not finished.
+    var isReading: Bool {
+        lastOpened != nil && !isFinished
+    }
+
     /// The bookmark on a page, if there is one.
     func bookmark(onPage page: Int) -> Bookmark? {
         bookmarks.first { $0.pageIndex == page }
