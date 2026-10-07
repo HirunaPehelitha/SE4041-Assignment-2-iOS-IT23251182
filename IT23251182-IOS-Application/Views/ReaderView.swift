@@ -18,6 +18,7 @@ struct ReaderView: View {
     @AppStorage("readerTheme") private var theme: ReaderTheme = .sepia
     @AppStorage("readerTextSize") private var textSize: ReaderTextSize = .medium
     @State private var showSettings = false
+    @State private var showAssistant = false
 
     init(book: Book) {
         self.book = book
@@ -69,6 +70,11 @@ struct ReaderView: View {
             .symbolEffect(.bounce, value: isBookmarked)
             .accessibilityIdentifier("reader.bookmark")
 
+            Button("Reading Assistant", systemImage: "sparkles") {
+                showAssistant = true
+            }
+            .accessibilityIdentifier("reader.assistant")
+
             Button("Reading Settings", systemImage: "textformat.size") {
                 showSettings = true
             }
@@ -76,6 +82,10 @@ struct ReaderView: View {
         .sheet(isPresented: $showSettings) {
             ReaderSettingsView(theme: $theme, textSize: $textSize)
                 .presentationDetents([.height(260)])
+        }
+        .sheet(isPresented: $showAssistant) {
+            AssistantView(pageText: pages[book.currentPage])
+                .presentationDetents([.medium, .large])
         }
         .onAppear {
             book.lastOpened = .now
