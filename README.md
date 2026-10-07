@@ -23,6 +23,7 @@ IT23251182-IOS-Application/
 │   ├── ReaderView.swift   screen 2 – reading, page swipe, bookmarks, settings
 │   ├── BookmarksView.swift screen 3 – all bookmarks
 │   ├── AddBookView.swift  screen 4 – type/paste text or scan photos
+│   ├── ProfileView.swift  screen 5 – name, reading stats, default settings
 │   └── BookCoverView.swift custom component – draws a cover
 └── Helpers/
     ├── Paginator.swift    splits text into pages
@@ -37,11 +38,11 @@ IT23251182-IOS-Application/
 | 1 | Purpose & audience | above |
 | 2 | Animations, gestures, adaptive layout | swipe to turn pages, long-press to bookmark or delete, swipe to delete bookmarks, bookmark bounce, adaptive grid on iPad |
 | 3 | Theme + custom component / ViewModifier | `BookCoverView`, `.readerPage()` modifier, accent colour |
-| 4 | NavigationStack, 3+ screens | Library → Reader, Bookmarks → Reader, Add Book |
+| 4 | NavigationStack, 3+ screens | Library → Reader, Bookmarks → Reader, Add Book, Profile (3 tabs) |
 | 5 | SwiftData | `Book`, `Bookmark` (reading position saved automatically) |
 | 6 | Emerging tech | **Vision** text recognition in `TextScanner.swift` |
 | 7 | Dark mode, Dynamic Type, accessibility | system colours + night page, text styles, VoiceOver labels |
-| 8 | Testing | 11 unit tests, 3 UI tests and 1 launch-speed test, all passing. Still to do: user testing (UAT) and Instruments profiling |
+| 8 | Testing | 11 unit tests, 4 UI tests and 1 launch-speed test, all passing. Still to do: user testing (UAT) and Instruments profiling |
 
 ## Running
 

@@ -64,3 +64,13 @@ and how it was used. Keep adding an entry each time you use an AI tool.
   3 short original sample stories, 11 unit tests and 4 UI tests (all passing).
 - **How I used it:** _(fill in: which parts you read, changed or rewrote yourself)_
 - **What I learned:** _(fill in, e.g. how `TabView(.page)` gives swipe-to-turn-page, how `@Query` works)_
+
+## Entry 5 – 2026-10-07 – Profile screen
+
+- **Prompts:** "can u run this", "do it have three screen", "make like somthing profile"
+- **Response summary:** Ran the app in the simulator and confirmed it has 4 screens. Added a Profile tab
+  (`ProfileView.swift`) with the reader's name and an initials picture saved with `@AppStorage`, reading
+  stats worked out from SwiftData (books started and finished, pages read, bookmarks), and default reading
+  settings. Added a UI test for it. All 16 tests pass.
+- **How I used it:** _(fill in)_
+- **What I learned:** _(fill in, e.g. the difference between @AppStorage and SwiftData)_

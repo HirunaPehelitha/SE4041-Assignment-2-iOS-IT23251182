@@ -50,6 +50,18 @@ final class BookNestUITests: XCTestCase {
         XCTAssertTrue(app.buttons["book.My Test Book"].waitForExistence(timeout: 3))
     }
 
+    func testProfileShowsNameAndStats() {
+        app.tabBars.buttons["Profile"].tap()
+        XCTAssertTrue(app.navigationBars["Profile"].waitForExistence(timeout: 3))
+
+        let nameField = app.textFields["profile.name"]
+        nameField.tap()
+        nameField.typeText("Hiruna Pehelitha")
+
+        XCTAssertTrue(app.staticTexts["HP"].exists)            // initials picture
+        XCTAssertTrue(app.staticTexts["Books in library"].exists)
+    }
+
     func testLaunchPerformance() {
         measure(metrics: [XCTApplicationLaunchMetric()]) {
             XCUIApplication().launch()

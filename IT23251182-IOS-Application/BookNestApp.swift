@@ -15,6 +15,10 @@ struct BookNestApp: App {
     init() {
         // UI tests pass "-uiTesting" so they always start with a fresh, temporary database.
         let isUITesting = ProcessInfo.processInfo.arguments.contains("-uiTesting")
+        if isUITesting {
+            // Also forget saved settings (name, page colour…) from earlier test runs.
+            UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        }
         let config = ModelConfiguration(isStoredInMemoryOnly: isUITesting)
         container = try! ModelContainer(for: Book.self, Bookmark.self, configurations: config)
 
@@ -30,6 +34,9 @@ struct BookNestApp: App {
                 }
                 Tab("Bookmarks", systemImage: "bookmark.fill") {
                     BookmarksView()
+                }
+                Tab("Profile", systemImage: "person.crop.circle.fill") {
+                    ProfileView()
                 }
             }
         }
