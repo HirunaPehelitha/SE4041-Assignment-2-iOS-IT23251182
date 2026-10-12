@@ -16,15 +16,36 @@ final class BookNestUITests: XCTestCase {
         app.launch()
     }
 
+    // MARK: - Helpers
+
+    /// Taps a tab. iPhone shows a tab bar at the bottom; iPad (iPadOS 26) shows a floating bar at the top.
+    private func openTab(_ name: String) {
+        let tabBarButton = app.tabBars.buttons[name]
+        if tabBarButton.exists {
+            tabBarButton.tap()
+        } else {
+            app.buttons[name].firstMatch.tap()
+        }
+    }
+
+    /// Waits (up to 3 s) for the page number to start with `prefix`, e.g. after a page-turn animation.
+    private func waitForPage(_ prefix: String) -> Bool {
+        let pageNumber = app.staticTexts["reader.pageNumber"]
+        let predicate = NSPredicate(format: "label BEGINSWITH %@", prefix)
+        return XCTWaiter.wait(for: [expectation(for: predicate, evaluatedWith: pageNumber)], timeout: 3) == .completed
+    }
+
+    // MARK: - Tests
+
     func testOpenBookAndTurnPage() {
         app.buttons["book.The Kite Over Galle Fort"].tap()
 
         let pageNumber = app.staticTexts["reader.pageNumber"]
         XCTAssertTrue(pageNumber.waitForExistence(timeout: 3))
-        XCTAssertTrue(pageNumber.label.hasPrefix("Page 1 of"))
+        XCTAssertTrue(waitForPage("Page 1 of"))
 
         app.swipeLeft()
-        XCTAssertTrue(pageNumber.label.hasPrefix("Page 2 of"))
+        XCTAssertTrue(waitForPage("Page 2 of"))
     }
 
     func testContinueReadingCardAppearsAfterOpeningBook() {
@@ -43,7 +64,7 @@ final class BookNestUITests: XCTestCase {
 
         // The tab bar is hidden while reading, so go back to the library first.
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.tabBars.buttons["Bookmarks"].tap()
+        openTab("Bookmarks")
         XCTAssertTrue(app.staticTexts["The Kite Over Galle Fort"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Page 1"].exists)
     }
@@ -61,7 +82,7 @@ final class BookNestUITests: XCTestCase {
     }
 
     func testProfileShowsNameAndStats() {
-        app.tabBars.buttons["Profile"].tap()
+        openTab("Profile")
         XCTAssertTrue(app.navigationBars["Profile"].waitForExistence(timeout: 3))
 
         let nameField = app.textFields["profile.name"]
@@ -70,6 +91,19 @@ final class BookNestUITests: XCTestCase {
 
         XCTAssertTrue(app.staticTexts["HP"].exists)            // initials picture
         XCTAssertTrue(app.staticTexts["Books in library"].exists)
+    }
+
+    func testReaderWorksInLandscape() {
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer { XCUIDevice.shared.orientation = .portrait }
+
+        app.buttons["book.The Kite Over Galle Fort"].tap()
+        let pageNumber = app.staticTexts["reader.pageNumber"]
+        XCTAssertTrue(pageNumber.waitForExistence(timeout: 3))
+
+        // Swipe on the page itself (the whole-app swipe isn't reliable after rotating).
+        app.scrollViews["reader.page"].firstMatch.swipeLeft(velocity: .fast)
+        XCTAssertTrue(waitForPage("Page 2 of"))
     }
 
     func testLaunchPerformance() {

@@ -85,3 +85,20 @@ and how it was used. Keep adding an entry each time you use an AI tool.
   All 18 tests pass.
 - **How I used it:** _(fill in)_
 - **What I learned:** _(fill in, e.g. how computed properties filter and sort the books)_
+
+## Entry 7 – 2026-10-07 – Checking against the brief and finishing the "partly done" items
+
+- **Prompts:** "do we need ad anything Ai related thing", "all needed in this doc has completed or not",
+  "Part A - partly ones need to be Done"
+- **Response summary:**
+  - Compared the app with every requirement in the assignment PDF and listed what was done, partly done and missing.
+  - Added a **Reading Assistant** (`BookAssistant.swift`, `AssistantView.swift`) using Apple's on-device
+    Foundation Models: page summary, explain difficult words, 3-question quiz, and a friendly message when
+    Apple Intelligence is unavailable. Tested live in the simulator.
+  - Drew a custom **app icon** (open book in a nest with an AI sparkle) in light, dark and tinted versions.
+  - Added a **landscape UI test** and ran every test on **iPhone 17 and iPad Air**. The tests found that the
+    iPad's floating tab bar and the landscape swipe needed different handling in the tests.
+  - Added **XCTest performance tests** (paginating and creating a ~100,000-word book) and launch-time measurement.
+  - Wrote drafts of **Purpose & Audience** and the **UAT plan / questionnaire / results table**.
+- **How I used it:** _(fill in – the purpose text must be rewritten in your own words, and the UAT must be done with real people)_
+- **What I learned:** _(fill in, e.g. how LanguageModelSession works, why the AI runs on-device)_
