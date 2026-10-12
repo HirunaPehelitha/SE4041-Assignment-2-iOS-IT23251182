@@ -14,6 +14,9 @@ import NaturalLanguage
 
 enum GenreClassifier {
 
+    /// Increase this number every time the model is retrained, so saved books get re-labelled.
+    static let modelVersion = 2
+
     /// The genres the model was trained on, with an icon for each.
     static let genres = ["Adventure", "Nature", "Family", "Science", "Mystery"]
 

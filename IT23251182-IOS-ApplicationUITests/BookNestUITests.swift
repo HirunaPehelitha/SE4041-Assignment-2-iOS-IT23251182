@@ -75,7 +75,11 @@ final class BookNestUITests: XCTestCase {
         app.textFields["add.title"].tap()
         app.textFields["add.title"].typeText("My Test Book")
         app.textViews["add.text"].tap()
-        app.textViews["add.text"].typeText("Hello from the UI test.")
+        app.textViews["add.text"].typeText("The detective found a hidden key and a secret letter. Someone in the house was lying about the stolen ring.")
+
+        // Core ML predicts the genre live while typing.
+        XCTAssertTrue(app.staticTexts["Mystery"].waitForExistence(timeout: 3))
+
         app.buttons["add.save"].tap()
 
         XCTAssertTrue(app.buttons["book.My Test Book"].waitForExistence(timeout: 3))

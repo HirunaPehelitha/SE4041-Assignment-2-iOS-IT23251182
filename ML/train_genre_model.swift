@@ -46,6 +46,7 @@ print(String(format: "Training accuracy: %.1f%%", trainingAccuracy))
 print(String(format: "Testing accuracy:  %.1f%%", testingAccuracy))
 
 // 5. Save the Core ML model into the app.
+// After retraining, also increase GenreClassifier.modelVersion in the app so saved books are re-labelled.
 let metadata = MLModelMetadata(author: "IT23251182",
                                shortDescription: "Predicts a book's genre (Adventure, Nature, Family, Science, Mystery) from its text.",
                                version: "1.0")

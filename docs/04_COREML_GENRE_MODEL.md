@@ -48,9 +48,12 @@ Two problems found by the unit tests, and how they were fixed:
   calls `NLModel.predictedLabelHypotheses`, and returns `(genre, confidence)`.
 - `Models/Book.swift`: `var genre: String = ""` is set when a book is created. The default value lets SwiftData
   update older saved books without a migration.
-- `BookNestApp.swift`: fills in the genre for books saved before this feature existed.
+- `BookNestApp.swift`: fills in the genre for older books, and **re-labels every book when
+  `GenreClassifier.modelVersion` changes**. This was added after a bug: books labelled by an early,
+  weaker model kept their wrong "Adventure" genre after the model was improved.
 - `Views/GenreTag.swift`, `LibraryView` (chips), `AddBookView` (live prediction), `ProfileView` (favourite genre).
 - Tests: `GenreClassifierTests.swift` covers empty text, valid labels and confidence, 4 unseen passages, and the sample books.
+  The UI tests check the genre filter chips and the live "Mystery" prediction in Add Book.
 
 ## 4.5 Limitations and future work
 
