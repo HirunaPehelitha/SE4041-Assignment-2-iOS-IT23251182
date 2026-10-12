@@ -18,6 +18,7 @@ final class Book {
     var coverHue: Double          // 0...1, picks the colour of the cover
     var dateAdded: Date
     var lastOpened: Date?         // nil = never opened
+    var genre: String = ""        // guessed by the Core ML model ("" = not worked out yet)
 
     // When a book is deleted, its bookmarks are deleted too.
     @Relationship(deleteRule: .cascade, inverse: \Bookmark.book)
@@ -31,6 +32,7 @@ final class Book {
         self.currentPage = 0
         self.coverHue = coverHue
         self.dateAdded = .now
+        self.genre = GenreClassifier.predict(text)?.genre ?? ""
     }
 
     /// How much of the book has been read, from 0 to 1.

@@ -30,6 +30,13 @@ struct ProfileView: View {
         books.filter { $0.lastOpened != nil }.reduce(0) { $0 + $1.currentPage + 1 }
     }
 
+    /// The genre (from Core ML) the reader has opened most often, or nil if nothing is read yet.
+    private var favouriteGenre: String? {
+        let readGenres = books.filter { $0.lastOpened != nil && !$0.genre.isEmpty }.map(\.genre)
+        let counts = Dictionary(readGenres.map { ($0, 1) }, uniquingKeysWith: +)
+        return counts.max { $0.value < $1.value }?.key
+    }
+
     /// "Hiruna Pehelitha" -> "HP"
     private var initials: String {
         let letters = name.split(separator: " ").prefix(2).compactMap(\.first)
@@ -69,6 +76,14 @@ struct ProfileView: View {
                     StatRow(title: "Books finished", value: booksFinished, icon: "checkmark.seal.fill")
                     StatRow(title: "Pages read", value: pagesRead, icon: "doc.text.fill")
                     StatRow(title: "Bookmarks", value: bookmarks.count, icon: "bookmark.fill")
+                    if let favouriteGenre {
+                        LabeledContent {
+                            Text(favouriteGenre).font(.headline)
+                        } label: {
+                            Label("Favourite genre", systemImage: GenreClassifier.icon(for: favouriteGenre))
+                        }
+                        .accessibilityElement(children: .combine)
+                    }
                 }
 
                 // Default reading settings (the same ones the AA button changes)

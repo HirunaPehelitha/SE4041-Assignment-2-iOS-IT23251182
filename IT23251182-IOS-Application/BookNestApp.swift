@@ -24,6 +24,12 @@ struct BookNestApp: App {
 
         // Put a few sample books on the shelf the first time the app opens.
         SampleBooks.addIfLibraryIsEmpty(container.mainContext)
+
+        // Books saved before the Core ML genre feature existed get their genre now.
+        let books = (try? container.mainContext.fetch(FetchDescriptor<Book>())) ?? []
+        for book in books where book.genre.isEmpty {
+            book.genre = GenreClassifier.predict(book.text)?.genre ?? ""
+        }
     }
 
     var body: some Scene {

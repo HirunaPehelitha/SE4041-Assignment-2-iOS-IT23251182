@@ -61,6 +61,28 @@ struct AddBookView: View {
                         .font(.system(.body, design: .serif))
                         .accessibilityIdentifier("add.text")
                 }
+
+                // Core ML: the genre is predicted live while the text is typed or scanned.
+                Section {
+                    if let prediction = GenreClassifier.predict(text) {
+                        LabeledContent {
+                            Text("\(Int(prediction.confidence * 100))% sure")
+                                .foregroundStyle(.secondary)
+                        } label: {
+                            Label(prediction.genre, systemImage: GenreClassifier.icon(for: prediction.genre))
+                                .font(.headline)
+                                .foregroundStyle(.tint)
+                        }
+                        .accessibilityIdentifier("add.genre")
+                    } else {
+                        Text("Add some text to detect the genre.")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Detected Genre")
+                } footer: {
+                    Text("Predicted on your iPhone by BookNest's own Core ML model.")
+                }
             }
             .navigationTitle("Add Book")
             .navigationBarTitleDisplayMode(.inline)

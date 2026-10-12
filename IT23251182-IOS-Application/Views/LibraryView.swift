@@ -30,6 +30,7 @@ struct LibraryView: View {
     @AppStorage("readerName") private var name = ""
 
     @State private var filter: BookFilter = .all
+    @State private var genreFilter: String?          // nil = all genres
     @State private var sort: BookSort = .recent
     @State private var searchText = ""
     @State private var showAddBook = false
@@ -53,10 +54,15 @@ struct LibraryView: View {
         case .new: result = result.filter { $0.lastOpened == nil }
         }
 
+        if let genreFilter {
+            result = result.filter { $0.genre == genreFilter }
+        }
+
         if !searchText.isEmpty {
             result = result.filter {
                 $0.title.localizedCaseInsensitiveContains(searchText) ||
-                $0.author.localizedCaseInsensitiveContains(searchText)
+                $0.author.localizedCaseInsensitiveContains(searchText) ||
+                $0.genre.localizedCaseInsensitiveContains(searchText)
             }
         }
 
@@ -93,6 +99,21 @@ struct LibraryView: View {
                         ForEach(BookFilter.allCases) { Text($0.rawValue).tag($0) }
                     }
                     .pickerStyle(.segmented)
+
+                    // Genre chips – the genres come from our Core ML model
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            GenreChip(title: "All Genres", icon: "square.grid.2x2", isSelected: genreFilter == nil) {
+                                withAnimation(.snappy) { genreFilter = nil }
+                            }
+                            ForEach(GenreClassifier.genres.filter { genre in books.contains { $0.genre == genre } }, id: \.self) { genre in
+                                GenreChip(title: genre, icon: GenreClassifier.icon(for: genre),
+                                          isSelected: genreFilter == genre) {
+                                    withAnimation(.snappy) { genreFilter = (genreFilter == genre) ? nil : genre }
+                                }
+                            }
+                        }
+                    }
 
                     // The grid of books
                     LazyVGrid(columns: columns, alignment: .leading, spacing: 28) {
@@ -166,6 +187,7 @@ private struct ContinueReadingCard: View {
                     Text(book.author)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+                    GenreTag(genre: book.genre)
 
                     Spacer(minLength: 0)
 
@@ -218,6 +240,7 @@ private struct BookGridItem: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
+            GenreTag(genre: book.genre)
 
             if book.lastOpened == nil {
                 Text("NEW")
@@ -233,6 +256,28 @@ private struct BookGridItem: View {
                     .foregroundStyle(book.isFinished ? .green : .secondary)
             }
         }
+    }
+}
+
+/// A tappable genre filter button.
+private struct GenreChip: View {
+    let title: String
+    let icon: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label(title, systemImage: icon)
+                .font(.subheadline.weight(.medium))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .foregroundStyle(isSelected ? .white : .primary)
+                .background(isSelected ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.quaternary), in: .capsule)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityIdentifier("genre.\(title)")
     }
 }
 
