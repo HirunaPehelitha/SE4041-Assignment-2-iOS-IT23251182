@@ -106,6 +106,14 @@ final class BookNestUITests: XCTestCase {
         XCTAssertTrue(waitForPage("Page 2 of"))
     }
 
+    func testGenreFilterUsesCoreMLGenres() {
+        // The Core ML model labels the elephant story "Nature" and the kitchen story "Family".
+        app.buttons["genre.Nature"].tap()
+
+        XCTAssertTrue(app.buttons["book.The Elephant Who Loved Rain"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["book.Grandmother's Kitchen"].exists)
+    }
+
     func testLaunchPerformance() {
         measure(metrics: [XCTApplicationLaunchMetric()]) {
             XCUIApplication().launch()

@@ -102,3 +102,18 @@ and how it was used. Keep adding an entry each time you use an AI tool.
   - Wrote drafts of **Purpose & Audience** and the **UAT plan / questionnaire / results table**.
 - **How I used it:** _(fill in – the purpose text must be rewritten in your own words, and the UAT must be done with real people)_
 - **What I learned:** _(fill in, e.g. how LanguageModelSession works, why the AI runs on-device)_
+
+## Entry 8 – 2026-10-12 – Core ML genre classifier (branch `feature/coreml-genre`)
+
+- **Prompt:** "Emerging technologyfor this you can use like core ML or like a thing"
+- **Response summary:**
+  - Wrote 120 original example passages in 5 genres (`ML/genre_training_data.csv`) and a Create ML training
+    script (`ML/train_genre_model.swift`). Trained a text classifier: 98.9% training and 87.0% testing accuracy.
+  - Added `GenreClassifier.swift` (Core ML + NaturalLanguage), a `genre` field on `Book`, genre tags and chips
+    in the Library, live "Detected Genre" in Add Book, and "Favourite genre" in Profile.
+  - Unit tests found 2 problems: long texts were labelled "Adventure", and the generated model class crashed.
+    Fixed with sentence-level scoring and by loading the model with `MLModel(contentsOf:)`. Also compared the
+    maxEnt algorithm (65% test accuracy) with transfer learning (75% → 87% after adding data).
+  - Documented everything in `docs/04_COREML_GENRE_MODEL.md`.
+- **How I used it:** _(fill in – e.g. open the CSV in the Create ML app, retrain it, and add your own examples)_
+- **What I learned:** _(fill in – e.g. training vs testing accuracy, overfitting, why sentence-level voting helped)_

@@ -4,7 +4,8 @@ SE4041 MADD – Assignment 2, Part A (IT23251182)
 
 BookNest is a Kindle-style reading app. You can read books page by page, change the page
 colour and text size, bookmark pages, and turn a **paper book into an e-book** by taking photos
-of its pages. Apple's **Vision** framework reads the text, and a **Reading Assistant** built on
+of its pages. Apple's **Vision** framework reads the text, **our own Core ML model** (trained with
+Create ML) predicts each book's genre, and a **Reading Assistant** built on
 Apple Intelligence (Foundation Models) summarises pages, explains hard words and makes quizzes.
 Everything runs on the device.
 
@@ -27,13 +28,19 @@ IT23251182-IOS-Application/
 │   ├── AddBookView.swift  screen 4 – type/paste text or scan photos
 │   ├── ProfileView.swift  screen 5 – name, reading stats, default settings
 │   ├── AssistantView.swift sheet – AI summary / explain words / quiz
+│   ├── GenreTag.swift     small genre label
 │   ├── BookCoverView.swift custom component – draws a cover
 │   └── ReadingProgressBar.swift custom component – animated progress bar
 └── Helpers/
     ├── Paginator.swift    splits text into pages
-    ├── TextScanner.swift  Vision text recognition (emerging tech 1)
-    ├── BookAssistant.swift Apple Intelligence / Foundation Models (emerging tech 2)
+    ├── GenreClassifier.swift Core ML genre prediction (main emerging tech)
+    ├── TextScanner.swift  Vision text recognition
+    ├── BookAssistant.swift Apple Intelligence / Foundation Models
     └── ReaderStyle.swift  page colours, text sizes, custom `.readerPage()` ViewModifier
+
+IT23251182-IOS-Application/ML/BookGenreClassifier.mlmodel   the trained Core ML model
+ML/genre_training_data.csv     120 labelled example passages
+ML/train_genre_model.swift     Create ML training script (swift ML/train_genre_model.swift)
 ```
 
 ## Assignment checklist (Part A)
@@ -45,7 +52,7 @@ IT23251182-IOS-Application/
 | 3 | Theme + custom component / ViewModifier | `BookCoverView`, `ReadingProgressBar`, `.readerPage()` modifier, accent colour |
 | 4 | NavigationStack, 3+ screens | Library → Reader, Bookmarks → Reader, Add Book, Profile (3 tabs) |
 | 5 | SwiftData | `Book`, `Bookmark` (reading position saved automatically) |
-| 6 | Emerging tech | **Vision** text recognition (`TextScanner.swift`) and **Apple Intelligence** reading assistant (`BookAssistant.swift`) |
+| 6 | Emerging tech | **Core ML**: own genre model trained with Create ML, 87% test accuracy ([docs/04_COREML_GENRE_MODEL.md](docs/04_COREML_GENRE_MODEL.md)); plus **Vision** text recognition and an **Apple Intelligence** reading assistant |
 | 7 | Icon, branding, Dark Mode, Dynamic Type, accessibility | custom app icon (light, dark and tinted), warm orange brand colour, night page, text styles, VoiceOver labels |
 | 8 | Testing & performance | unit, UI, landscape and performance tests (all passing on iPhone and iPad) – [docs/03_PERFORMANCE.md](docs/03_PERFORMANCE.md); UAT plan in [docs/02_USER_ACCEPTANCE_TESTING.md](docs/02_USER_ACCEPTANCE_TESTING.md) |
 
